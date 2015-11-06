@@ -1,11 +1,16 @@
 
 var nyc;
-var changeColor=0;
+var wind=0;
 var clouds;
-var cloudSize;
+var cloudSize = 20;
+
+var randX=0;
+var randY=0;
 
 var sunrise;
 var sunset;
+
+var windPulse = "fadein";
 
 function preload() {
 	//First I set up my API call
@@ -22,34 +27,47 @@ function setup() {
   createCanvas(400,400);
 
   //Save the number of clouds and divide by two so the number isn't too high
-  clouds = nyc.clouds.all/2;
+  clouds = nyc.clouds.all;
 
-  //take the window width and divide by the number of clouds so I can see how big I should make my squares
+  //take the window width and divide by the number of clouds so I can see how big I should make my shapes
   cloudSize = 400/clouds;
 
   //turn my sunrise and sunset numbers into timestamps
   sunset = new Date(nyc.sys.sunset*1000);
   sunrise = new Date(nyc.sys.sunrise*1000);
 
+
 }
 
 function draw() {
 
-	background("white");
+	background(0,0,random(wind-10,wind+10));
 
-	//Use the wind speed to change the color
-	//the faster the wind, the faster it will change color
-	changeColor += nyc.wind.speed;
+	//Use the wind speed to change the background color
+	//the faster the wind, the faster it will fade in and out
+		 if (windPulse == "fadein"){
+		 	wind += nyc.wind.speed;
+		 } else if (windPulse == "fadeout"){
+		 	wind -= nyc.wind.speed;
+		 }
 
-		fill("lightblue");
-
-		//create a grid based on the number of clouds
-		for(var x = 0;x < clouds; x++){
-			for(var y = 0;y< clouds;y++){
-				fill(0,0,random(changeColor-10,changeColor+10));
-				rect(x*cloudSize,y*cloudSize,cloudSize,cloudSize);
-			}
+		 //switch between fading in and out when the wind variable 
+		 //reaches the color limits of 0 or 255
+		if(wind > 255){
+			windPulse = "fadeout";
+		} else if(wind < 0){
+			windPulse = "fadein";
 		}
+
+	
+		//draw ellipses using the cloud number
+		for(var c = 0;c < clouds; c++){
+				fill("white");
+				ellipse(random(0,400),random(0,400),cloudSize,cloudSize);
+		}
+
+
+		
 
 	textSize(22);
 	textAlign(LEFT);
@@ -67,8 +85,7 @@ function draw() {
 	text(sunset.toLocaleTimeString(), 22,325);
 
 	//Or I could create a countdown clock that counts down the number of seconds:
-	var now = new Date();
-	var countdown = now.getTime()-sunrise.getTime();
-	text(countdown, 250,325);
+	var countdown = Date.now()-nyc.sys.sunset*1000;
+	text(-countdown, 250,325);
 
 }

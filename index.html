@@ -66,18 +66,19 @@
 		<code>nyc.weather[0].description</code>
 		<h2>Working with dates</h2>
 
-
-
-		The value the Weather API gives you for sunset looks like one long number, but its actually a date and time. That number represents how many miliseconds since January 1, 1970 it has been. You can get it into a more readable format by creating a new Date and saving it to a variable. You have to multiply it by 1000 because JavaScript reads dates in terms of how many seconds, not miliseconds:<br />
+		The value the Weather API gives you for sunset looks like one long number, but its actually a date and time. That number represents how many seconds since January 1, 1970 it has been. You can get it into a more readable format by creating a new Date and saving it to a variable. You have to multiply it by 1000 because JavaScript reads dates in terms of how many miliseconds, not seconds:<br />
 		<code>var sunset = new Date(nyc.sys.sunset*1000);</code></p>
 
 		<p>Now you can use the sunset variable to check when sunset is:<br />
 		<code>sunset.toLocaleTimeString()</code></p>
 		<p>You can also get today's date and time using <code>var today = new Date();</code></p>
-		<p>.toLocalTimeString gives you an easy to read time. You could also get the date using .toLocalDateString(). There's a list of date formats on <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date">the JavaScript Date reference guide</a>. Note that Dates are native to JavaScript, not just p5.</p>
+		<p>.toLocalTimeString gives you an easy to read time. You could also get the date using .toLocalDateString(). There's a list of date formats on <a href="http://www.w3schools.com/jsref/jsref_obj_date.asp">the JavaScript Date reference guide</a>. Note that Dates are native to JavaScript, not just p5.</p>
+
+
+		<p>To create a countdown clock, it's easier to use the raw numbers and subtract them. For example, you can take <code>nyc.sys.sunset*1000</code> and subtract it from the current time <code>Date.now()</code>. That will give you how many miliseconds apart the two times are. 
 <hr />
 <h1><a href="example.html">NYC Example</a></h1>
-<p><a href="example.html">This example</a> shows how you can use fields like wind and clouds to affect the rate of change in color and number of squares. It also gives an example of how to utilize the sunrise and sunset times.</p>
+<p><a href="example.html">This example</a> shows how you can use fields like wind and clouds to affect the rate of change in color and number of shapes. It also gives an example of how to utilize the sunrise and sunset times.</p>
 
 <hr />
 		<h1>Assignment</h1>
