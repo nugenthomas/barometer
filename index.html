@@ -1,0 +1,102 @@
+<html>
+<head>
+	<title>Weather</title>
+		<script language="javascript" src="helpers/p5.js"></script>
+		<script language="javascript" src="helpers/p5.dom.js"></script>
+		<style>
+			body{font-family: Arial, sans-serif;}
+			iframe{border: 1px solid #000;width:400;height:400;}
+			#wrapper{max-width:1300px;margin:0 auto;}
+			code{background-color:#D4FFFE;border-radius:4px;}
+			pre, pre code{background-color:#eefefe;}
+			.location{display: inline-block;}
+		</style>
+</head>
+<body>
+
+	<div id="wrapper">
+		<h2>The Weather API</h2>
+		<p>Open Weather Map provides <a href="http://openweathermap.org/API">an API</a> where you can access weather information from around the world. You can search for a city by giving the name of the city and the short country code. For example, you can search for "New York, US", "London, UK", "Shanghai, CN", or "Havana,CU". You can look up a <A href="https://www.iso.org/obp/ui/#search/code/">list of country codes here</a>.</p>
+
+		<p>You also have to add an API key to the end of the URL. For this assignment everyone can use my API key. This key lets Open Weather Map keep track of where the requests are coming from:<br />
+		<a href="http://api.openweathermap.org/data/2.5/weather?q=New York,US&APPID=f02124924447c73bc1d1626b1bee5f45">http://api.openweathermap.org/data/2.5/weather?q=New York,US<strong>&APPID=f02124924447c73bc1d1626b1bee5f45</strong></a></p>
+
+		<p>Sometimes its helpful to open up the API url in your browser to see exactly what data you're getting. Click on the link above to take a look at the weather data for NYC.</p>
+
+
+		<h2>Working with JSON</h2>
+
+		<p>This is an example of how the data is strucured for this assignment:</p>
+
+<pre><code>{
+	"coord": {"lon":-74.01,"lat":40.71},
+	"weather":[ {"id":500,"main":"Rain","description":"light rain","icon":"10n"} ],
+	"base":"cmc stations",
+	"main":{
+		"temp":291.027,
+		"pressure":1022.38,
+		"humidity":98,
+		"temp_min":291.027,
+		"temp_max":291.027,
+		"sea_level":1036.03,
+		"grnd_level":1022.38
+	},
+	"wind":{"speed":2.06,"deg":202.002},
+	"rain":{"3h":0.3575},
+	"clouds":{"all":92},
+	"dt":1446772192,
+	"sys":{"message":0.0031,"country":"US","sunrise":1446809516,"sunset":1446846409},
+	"id":5128581,
+	"name":"New York",
+	"cod":200
+}</code></pre>
+
+		<p>Lets say you loaded this JSON into a variable called <code>nyc</code>. In p5 you do this in the preload function by saying:<br />
+			<code>nyc = loadJSON(url);</code></p>
+		 <p>Then you could call the fields like this:</p>
+
+		<code>nyc.wind.speed</code> = 2.06<br />
+		<code>nyc.clouds.all</code> = 92<br />
+		<code>nyc.main.temp</code> = 291.027<br />
+		<code>nyc.name</code> = New York
+
+
+		<p>Getting the data inside weather is a little tricky because it is wrapped inside an array using the [] brackets. So we have to say:</p>
+
+		<code>nyc.weather[0].description</code>
+		<h2>Working with dates</h2>
+
+
+
+		The value the Weather API gives you for sunset looks like one long number, but its actually a date and time. That number represents how many miliseconds since January 1, 1970 it has been. You can get it into a more readable format by creating a new Date and saving it to a variable. You have to multiply it by 1000 because JavaScript reads dates in terms of how many seconds, not miliseconds:<br />
+		<code>var sunset = new Date(nyc.sys.sunset*1000);</code></p>
+
+		<p>Now you can use the sunset variable to check when sunset is:<br />
+		<code>sunset.toLocaleTimeString()</code></p>
+		<p>You can also get today's date and time using <code>var today = new Date();</code></p>
+		<p>.toLocalTimeString gives you an easy to read time. You could also get the date using .toLocalDateString(). There's a list of date formats on <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date">the JavaScript Date reference guide</a>. Note that Dates are native to JavaScript, not just p5.</p>
+<hr />
+<h1><a href="example.html">NYC Example</a></h1>
+<p><a href="example.html">This example</a> shows how you can use fields like wind and clouds to affect the rate of change in color and number of squares. It also gives an example of how to utilize the sunrise and sunset times.</p>
+
+<hr />
+		<h1>Assignment</h1>
+		<p>Use at least 5 different pieces of data to create an animated drawing that will adjust its display depending on the city's weather. Show how this would vary for 3 different cities by editing all three location javascipt files. Feel free to use anything we've learned in earlier classes, such as images or mouse and keyboard inputs. When you're done you should be able to see your drawings below:</p>
+
+<div class="location">
+			<h2><a href="location1.html">Location 1</a></h2>
+			<iframe src="location1.html"></iframe>
+		</div>
+		<div class="location">
+			<h2><a href="location2.html">Location 2</a></h2>
+			<iframe src="location2.html"></iframe>
+		</div>
+		<div class="location">
+			<h2><a href="location3.html">Location 3</a></h2>
+			<iframe src="location3.html"></iframe>
+		</div>
+
+
+</div>
+</body>
+</html>
